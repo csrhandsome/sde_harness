@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Local secrets / machine-specific env (CURSOR_API_KEY, etc.).
+.env.local
+
+# Local run outputs.
+logs/
+
+/resources/
+
+uv.lock
+
+build/
+.claude/settings.json
