@@ -9,6 +9,9 @@ description = "Harness VLA agent framework adapted for VLA-Adapter (from RPent)"
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.10,<3.13"
 dependencies = [
+    # Installed via root workspace (`vla-adapter`); do not depend on it here
+    # (avoids a circular workspace edge). Parent `uv sync` provides torch/prismatic.
+    # Harness / planner stack
     "pydantic-ai-slim[anthropic,openai]>=2.1",
     "pydantic>=2",
     "fastapi>=0.110",
@@ -17,24 +20,19 @@ dependencies = [
     "claude-agent-sdk>=0.1.60",
     "openai-codex>=0.1.0b3",
     "cursor-sdk>=1.0.0",
+    "codebuddy-agent-sdk>=0.3.0",
     "huggingface_hub>=0.24",
     "prompt-toolkit>=3.0.48",
     "numpy",
     "imageio>=2.0",
     "scipy",
+    # LIBERO env server (benchmark code itself stays on PYTHONPATH)
+    "robosuite==1.4.1",
 ]
 
 [project.scripts]
 sde-harness = "rpent.cli.main:main"
 rpent = "rpent.cli.main:main"
-
-[project.optional-dependencies]
-sam3 = [
-    "sam3==0.1.4",
-    "torch",
-    "torchvision",
-    "pillow>=10",
-]
 
 [tool.setuptools]
 include-package-data = true
@@ -42,4 +40,7 @@ include-package-data = true
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["rpent*"]
-exclude = ["tests*", "docs*", "scripts*"]
+exclude = ["tests*", "docs*", "scripts*", "robots*", "resources*"]
+
+[tool.uv]
+package = true

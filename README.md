@@ -133,6 +133,13 @@ experiments/robot/libero/libero_pro_evaluation_config.yaml
 
 在对应 benchmark 上跑 agent harness。入口与上面三套 eval 对齐，默认 `PLANNER=cursor`、`MODEL=composer-2.5`（需 `sde_harness/.env.local` 或 `CURSOR_API_KEY`）。
 
+Harness 已并入仓库根目录 uv workspace，与 VLA-Adapter 共用同一个 `.venv`：
+
+```bash
+# 在仓库根目录一次即可（同时装 vla-adapter + sde-harness）
+uv sync
+```
+
 ### 标准 LIBERO
 
 ```bash

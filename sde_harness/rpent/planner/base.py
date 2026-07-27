@@ -212,4 +212,24 @@ def build_planner(
             output_path=Path(output_dir) / f"cursor_{recipe_tag}.txt",
             dashboard=dashboard,
         )
+    if planner_type in {"codebuddy", "codebuddy_sdk"}:
+        from rpent.planner.codebuddy import CodeBuddyPlanner
+
+        cb_timeout_s = planner_timeout_s
+        if cb_timeout_s is None:
+            cb_timeout_s = int(
+                os.environ.get(
+                    "CODEBUDDY_TIMEOUT_S",
+                    os.environ.get("CELL_TIMEOUT_S", "1200"),
+                )
+            )
+        return CodeBuddyPlanner(
+            output_dir=output_dir,
+            repo_root=get_repo_root(),
+            model=model,
+            timeout_s=cb_timeout_s,
+            extra_dirs=[str(get_memory_dir(env_name))],
+            output_path=Path(output_dir) / f"codebuddy_{recipe_tag}.txt",
+            dashboard=dashboard,
+        )
     raise ValueError(f"unknown planner_type: {planner_type}")

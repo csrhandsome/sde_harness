@@ -158,3 +158,11 @@ logs/
 
 # Local LIBERO install (cloned separately)
 LIBERO/
+
+# Shared serving env (one .venv for all backends under serving/)
+serving/.venv/
+serving/cache/
+serving/vendor/
+
+# CodeBuddy project settings (RPent may write models.json for local OpenAI endpoints)
+.codebuddy/

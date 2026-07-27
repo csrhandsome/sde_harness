@@ -12,7 +12,8 @@ authors = [
 description = "VLA-Adapter: An Effective Paradigm for Tiny-Scale Vision-Language-Action Model"
 version = "0.0.1"
 readme = "README.md"
-requires-python = ">=3.9"
+# Harness (sde_harness) needs 3.10–3.12; keep one shared root env.
+requires-python = ">=3.10,<3.13"
 keywords = ["vision-language-action models", "tiny-scale backbone", "fine-tuning", "robotic learning"]
 license = {file = "LICENSE"}
 classifiers = [
@@ -23,8 +24,9 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3 :: Only",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
@@ -60,6 +62,14 @@ dependencies = [
     "json-numpy",
     "wand>=0.7.2",
     "scikit-image>=0.24.0",
+    # LIBERO runtime (benchmark code is on PYTHONPATH; these must survive `uv sync`)
+    "bddl",
+    "easydict",
+    "gym",
+    "imageio-ffmpeg",
+    "cloudpickle",
+    # Harness VLA (workspace member; `uv sync` at repo root installs both)
+    "sde-harness",
 ]
 
 [project.optional-dependencies]
@@ -82,19 +92,26 @@ documentation = "https://github.com/OpenHelix-Team/VLA-Adapter"
 
 [tool.setuptools.packages.find]
 where = ["."]
-exclude = ["cache"]
+exclude = ["cache", "sde_harness*", "serving*", "third_party*"]
 
 [tool.setuptools.package-data]
 "prismatic" = ["py.typed"]
 
+# Single shared env: root + sde_harness. (serving/.venv stays isolated.)
+[tool.uv.workspace]
+members = ["sde_harness"]
+
+[tool.uv.sources]
+sde-harness = { workspace = true }
+
 [tool.black]
 line-length = 121
-target-version = ["py38", "py39", "py310"]
+target-version = ["py310", "py311", "py312"]
 preview = true
 
 [tool.ruff]
 line-length = 121
-target-version = "py38"
+target-version = "py310"
 
 [tool.ruff.lint]
 select = ["A", "B", "E", "F", "I", "RUF", "W"]
